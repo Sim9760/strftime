@@ -32,6 +32,7 @@
   , shortDays: words('Sun Mon Tue Wed Thu Fri Sat')
   , months: words('January February March April May June July August September October November December')
   , shortMonths: words('Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec')
+  , ordinalSuffixes: words('st nd rd th th th th th th th th th th th th th th th th th st nd rd th th th th th th th st')
   , AM: 'AM'
   , PM: 'PM'
   , am: 'am'
@@ -203,7 +204,7 @@
         case 'n': return '\n';
 
         // '1st'
-        case 'o': return String(d.getDate()) + ordinal(d.getDate());
+        case 'o': return String(d.getDate()) + (locale.ordinalSuffixes[d.getDate() - 1] || '');
 
         // 'am'
         case 'P': return d.getHours() < 12 ? locale.am : locale.pm;
@@ -324,21 +325,6 @@
     if (hour == 0) hour = 12;
     else if (hour > 12) hour -= 12;
     return hour;
-  }
-
-  // Get the ordinal suffix for a number: st, nd, rd, or th
-  function ordinal(n) {
-    var i = n % 10
-      , ii = n % 100
-      ;
-    if ((ii >= 11 && ii <= 13) || i === 0 || i >= 4) {
-      return 'th';
-    }
-    switch (i) {
-      case 1: return 'st';
-      case 2: return 'nd';
-      case 3: return 'rd';
-    }
   }
 
   // firstWeekday: 'sunday' or 'monday', default is 'sunday'
